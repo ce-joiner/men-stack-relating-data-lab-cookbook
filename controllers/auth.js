@@ -25,25 +25,32 @@ router.post('/sign-up', async (req, res) => {
       return res.send('Username already taken.');
     }
   
-    // Username is not taken already!
     // Check if the password and confirm password match
     if (req.body.password !== req.body.confirmPassword) {
       return res.send('Password and Confirm Password must match');
     }
   
-    // Must hash the password before sending to the database
+    // Hash the password
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     req.body.password = hashedPassword;
   
-    // All ready to create the new user!
-    await User.create(req.body);
+    // Create the new user
+    const newUser = await User.create(req.body);
   
-    res.redirect('/auth/sign-in');
+    // Automatically sign in the user
+    req.session.user = {
+      username: newUser.username,
+      _id: newUser._id
+    };
+  
+    // Redirect to user's pantry instead of sign-in page
+    res.redirect(`/users/${newUser._id}/foods`);
   } catch (error) {
     console.log(error);
     res.redirect('/');
   }
 });
+
 
 router.post('/sign-in', async (req, res) => {
   try {

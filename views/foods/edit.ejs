@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Food Item</title>
+</head>
+<body>
+    <h1>Edit Food Item: <%= foodItem.name %></h1>
+
+    <form action="/users/<%= user._id %>/foods/<%= foodItem._id %>?_method=PUT" method="POST">
+        
+        <label for="name">Food Name:</label>
+        <input type="text" id="name" name="name" value="<%= foodItem.name %>" required>
+        
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" value="<%= foodItem.category %>" required>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="<%= foodItem.quantity %>" required>
+
+        <label for="unit">Unit (e.g., kg, liters):</label>
+        <input type="text" id="unit" name="unit" value="<%= foodItem.unit %>" required>
+
+        <label for="expirationDate">Expiration Date:</label>
+        <input type="date" id="expirationDate" name="expirationDate" value="<%= foodItem.expirationDate ? food.expirationDate.toDateString() : '' %>">
+
+        <label for="notes">Notes:</label>
+        <textarea id="notes" name="notes"><%= foodItem.notes %></textarea>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <a href="/users/<%= foodItem.userId %>/foods">Back to Pantry</a>
+</body>
+</html>

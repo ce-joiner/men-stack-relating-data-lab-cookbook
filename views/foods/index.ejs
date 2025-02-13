@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Pantry</title>
+    
+</head>
+<body>
+    <h1>Welcome to my Pantry</h1>
+    <a href="/users/<%= user._id %>/foods/new">Add a New Item</a>
+
+    <% if (user.pantry && user.pantry.length > 0) { %>
+        <ul>
+            <% user.pantry.forEach(food => { %>
+                <li>
+                    <strong><%= food.name %></strong> - <%= food.category %>
+                    <br>Quantity: <%= food.quantity %> <%= food.unit %>
+                    <br>Expiration: <%= food.expirationDate ? food.expirationDate.toDateString() : 'N/A' %>
+                    <br>Notes: <%= food.notes %>
+                    <br>
+        
+                    <form action="/users/<%= user._id %>/foods/<%= food._id %>/edit" method="GET" style="display:inline;">
+                        <button type="submit" style="background-color: grey; color: white; border: none; padding: 3px 6px; cursor: pointer;">Edit</button>
+                    </form>
+
+                    <form action="/users/<%= user._id %>/foods/<%= food._id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit" style="background-color: red; color: white; border: none; padding: 3px 6px; cursor: pointer;">Delete</button>
+                    </form>
+                </li>
+                <br>
+            <% }); %>
+            <br>
+        </ul>
+    <% } else { %>
+        <p>Your pantry is empty!</p>
+    <% } %>
+    <a href="/" class="btn btn-primary">Back to Home</a>
+</body>
+</html>
